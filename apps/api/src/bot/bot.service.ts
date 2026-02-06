@@ -327,9 +327,6 @@ export class BotService implements OnModuleInit {
     const text = `🏥 *BookMed*\n\n${this.t(s.lang, 'main_menu')}`;
     const kb = Markup.inlineKeyboard([
       [Markup.button.webApp('🌐 ' + (s.lang === 'RU' ? 'Открыть приложение' : 'Ilovani ochish'), 'https://mydent.uz/user')],
-      [Markup.button.callback(this.t(s.lang, 'book'), 'book')],
-      [Markup.button.callback(this.t(s.lang, 'my_appointments'), 'my_appointments')],
-      [Markup.button.callback(this.t(s.lang, 'my_diagnoses'), 'my_diagnoses')],
       [Markup.button.callback(this.t(s.lang, 'settings'), 'change_lang')],
     ]);
     if (forceReply) {
