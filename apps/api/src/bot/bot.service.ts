@@ -83,12 +83,11 @@ export class BotService implements OnModuleInit {
 
     this.setupHandlers();
 
-    try {
-      await this.bot.launch();
+    this.bot.launch().then(() => {
       this.logger.log('🤖 Telegram bot started: @bookmed_uzbot');
-    } catch (err) {
+    }).catch((err) => {
       this.logger.error('Failed to start bot', err);
-    }
+    });
   }
 
   /* ══════════════════ Handlers ══════════════════ */
