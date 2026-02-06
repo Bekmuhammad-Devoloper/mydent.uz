@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -27,7 +27,7 @@ const getErrorMsg = (err: any, fallback = 'Xatolik') => {
   return msg || fallback;
 };
 
-/* ════════════════════════ LOGIN ════════════════════════ */
+/* ======================== LOGIN ======================== */
 function AdminLogin({ onLogin }: { onLogin: (d: any, r: 'FOUNDER' | 'CLINIC_OWNER') => void }) {
   const [mode, setMode] = useState<'FOUNDER' | 'CLINIC_OWNER'>('FOUNDER');
   const [phone, setPhone] = useState('+998');
@@ -61,7 +61,7 @@ function AdminLogin({ onLogin }: { onLogin: (d: any, r: 'FOUNDER' | 'CLINIC_OWNE
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="card max-w-md w-full">
         <div className="flex justify-center mb-4">
-          <Image src="/logo.PNG" alt="MedBook" width={64} height={64} className="rounded-xl" />
+          <Image src="/logo.PNG" alt="BookMed" width={64} height={64} className="rounded-xl" />
         </div>
         <h1 className="text-2xl font-bold text-center mb-6">Admin Panel</h1>
 
@@ -119,7 +119,7 @@ function AdminLogin({ onLogin }: { onLogin: (d: any, r: 'FOUNDER' | 'CLINIC_OWNE
   );
 }
 
-/* ════════════════════════ REGIONS ════════════════════════ */
+/* ======================== REGIONS ======================== */
 function RegionsSection() {
   const [list, setList] = useState<any[]>([]);
   const [nameUz, setNameUz] = useState('');
@@ -160,7 +160,7 @@ function RegionsSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
         <input value={nameUz} onChange={(e) => setNameUz(e.target.value)} placeholder="Nom (UZ)" className="input" />
-        <input value={nameRu} onChange={(e) => setNameRu(e.target.value)} placeholder="Название (RU)" className="input" />
+        <input value={nameRu} onChange={(e) => setNameRu(e.target.value)} placeholder="�������� (RU)" className="input" />
         <button onClick={save} className="btn-primary flex items-center justify-center gap-2">
           {editId ? <><Pencil className="w-4 h-4" /> Yangilash</> : <><Plus className="w-4 h-4" /> Qo&#39;shish</>}
         </button>
@@ -199,7 +199,7 @@ function RegionsSection() {
   );
 }
 
-/* ════════════════════════ CLINICS ════════════════════════ */
+/* ======================== CLINICS ======================== */
 function ClinicsSection() {
   const [list, setList] = useState<any[]>([]);
   const [regions, setRegions] = useState<any[]>([]);
@@ -248,7 +248,7 @@ function ClinicsSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
         <input value={form.nameUz} onChange={(e) => upd('nameUz', e.target.value)} placeholder="Nom (UZ)" className="input" />
-        <input value={form.nameRu} onChange={(e) => upd('nameRu', e.target.value)} placeholder="Название (RU)" className="input" />
+        <input value={form.nameRu} onChange={(e) => upd('nameRu', e.target.value)} placeholder="�������� (RU)" className="input" />
         <input value={form.address} onChange={(e) => upd('address', e.target.value)} placeholder="Manzil" className="input" />
         <input value={form.phone} onChange={(e) => upd('phone', e.target.value)} placeholder="Telefon" className="input" />
         <select value={form.regionId} onChange={(e) => upd('regionId', e.target.value)} className="input">
@@ -309,7 +309,7 @@ function ClinicsSection() {
   );
 }
 
-/* ════════════════════════ OWNERS ════════════════════════ */
+/* ======================== OWNERS ======================== */
 function OwnersSection() {
   const [list, setList] = useState<any[]>([]);
   const [clinics, setClinics] = useState<any[]>([]);
@@ -386,7 +386,7 @@ function OwnersSection() {
             <div>
               <Phone className="w-3 h-3 inline text-gray-400" />
               <span className="font-medium ml-1">{o.phone}</span>
-              <span className="text-gray-400 text-sm ml-2">{o.clinic?.nameUz || '—'}</span>
+              <span className="text-gray-400 text-sm ml-2">{o.clinic?.nameUz || '�'}</span>
             </div>
             <div className="flex gap-2">
               <button
@@ -407,7 +407,7 @@ function OwnersSection() {
   );
 }
 
-/* ════════════════════════ SPECIALTIES (Founder) ════════════════════════ */
+/* ======================== SPECIALTIES (Founder) ======================== */
 function SpecialtiesSection() {
   const [list, setList] = useState<any[]>([]);
   const [nameUz, setNameUz] = useState('');
@@ -447,8 +447,8 @@ function SpecialtiesSection() {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-        <input value={nameUz} onChange={(e) => setNameUz(e.target.value)} placeholder="Nom (UZ) — Stomatolog" className="input" />
-        <input value={nameRu} onChange={(e) => setNameRu(e.target.value)} placeholder="Название (RU) — Стоматолог" className="input" />
+        <input value={nameUz} onChange={(e) => setNameUz(e.target.value)} placeholder="Nom (UZ) � Stomatolog" className="input" />
+        <input value={nameRu} onChange={(e) => setNameRu(e.target.value)} placeholder="�������� (RU) � ����������" className="input" />
         <button onClick={save} className="btn-primary flex items-center justify-center gap-2">
           {editId ? <><Pencil className="w-4 h-4" /> Yangilash</> : <><Plus className="w-4 h-4" /> Qo&#39;shish</>}
         </button>
@@ -487,7 +487,7 @@ function SpecialtiesSection() {
   );
 }
 
-/* ════════════════════════ CLINIC OWNER: DOCTORS ════════════════════════ */
+/* ======================== CLINIC OWNER: DOCTORS ======================== */
 function OwnerDoctorsSection({ clinicId }: { clinicId: string }) {
   const [list, setList] = useState<any[]>([]);
   const [specialties, setSpecialties] = useState<any[]>([]);
@@ -566,7 +566,7 @@ function OwnerDoctorsSection({ clinicId }: { clinicId: string }) {
             type="password"
             value={form.password}
             onChange={(e) => upd('password', e.target.value)}
-            placeholder="••••••••"
+            placeholder="��������"
             className="input"
           />
         </div>
@@ -633,7 +633,7 @@ function OwnerDoctorsSection({ clinicId }: { clinicId: string }) {
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <span className="font-medium">{d.firstName} {d.lastName}</span>
               <span className="text-gray-500 text-sm flex items-center gap-1">
-                <Award className="w-3 h-3" /> {d.specialty?.nameUz || '—'}
+                <Award className="w-3 h-3" /> {d.specialty?.nameUz || '�'}
               </span>
               <span className="text-gray-500 text-sm flex items-center gap-1">
                 <Clock className="w-3 h-3" /> {d.experienceYears} yil
@@ -666,7 +666,7 @@ function OwnerDoctorsSection({ clinicId }: { clinicId: string }) {
   );
 }
 
-/* ════════════════════════ OWNER DASHBOARD ════════════════════════ */
+/* ======================== OWNER DASHBOARD ======================== */
 function OwnerDashboard({ clinicId }: { clinicId: string }) {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -778,7 +778,7 @@ function OwnerDashboard({ clinicId }: { clinicId: string }) {
   );
 }
 
-/* ════════════════════════ OWNER APPOINTMENTS ════════════════════════ */
+/* ======================== OWNER APPOINTMENTS ======================== */
 function OwnerAppointments({ clinicId }: { clinicId: string }) {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -828,7 +828,7 @@ function OwnerAppointments({ clinicId }: { clinicId: string }) {
           <select value={doctorFilter} onChange={(e) => setDoctorFilter(e.target.value)} className="input" title="Doctor filter">
             <option value="all">Barcha shifokorlar</option>
             {stats.doctors?.map((d: any) => (
-              <option key={d.id} value={d.id}>{d.firstName} {d.lastName} — {d.specialty?.nameUz || ''}</option>
+              <option key={d.id} value={d.id}>{d.firstName} {d.lastName} � {d.specialty?.nameUz || ''}</option>
             ))}
           </select>
         </div>
@@ -870,7 +870,7 @@ function OwnerAppointments({ clinicId }: { clinicId: string }) {
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" />
-                      {a.startTime} — {a.endTime}
+                      {a.startTime} � {a.endTime}
                     </span>
                   </div>
                 </div>
@@ -903,7 +903,7 @@ function OwnerAppointments({ clinicId }: { clinicId: string }) {
   );
 }
 
-/* ════════════════════════ MAIN PAGE ════════════════════════ */
+/* ======================== MAIN PAGE ======================== */
 type FounderTab = 'regions' | 'clinics' | 'owners' | 'specialties';
 type OwnerTab = 'dashboard' | 'doctors' | 'appointments';
 type Tab = FounderTab | OwnerTab;
@@ -948,12 +948,12 @@ export default function AdminPage() {
   const activeTab = tabs.find(t => t.key === tab) ? tab : tabs[0].key;
 
   const tabDescriptions: Record<string, string> = {
-    regions: "Hududlarni boshqarish — yaratish, tahrirlash, o'chirish",
-    clinics: "Klinikalarni boshqarish — yaratish, tahrirlash, o'chirish",
+    regions: "Hududlarni boshqarish � yaratish, tahrirlash, o'chirish",
+    clinics: "Klinikalarni boshqarish � yaratish, tahrirlash, o'chirish",
     owners: 'Klinika egalarini boshqarish',
-    specialties: "Mutaxassisliklarni boshqarish — Stomatolog, Pediatr va h.k.",
-    dashboard: "Klinikangiz statistikasi — daromad, shifokorlar, qabullar",
-    doctors: "Shifokorlarni boshqarish — yaratish, tahrirlash, o'chirish",
+    specialties: "Mutaxassisliklarni boshqarish � Stomatolog, Pediatr va h.k.",
+    dashboard: "Klinikangiz statistikasi � daromad, shifokorlar, qabullar",
+    doctors: "Shifokorlarni boshqarish � yaratish, tahrirlash, o'chirish",
     appointments: "Barcha shifokorlar bo'yicha qabullar ro'yxati",
   };
 
@@ -976,9 +976,9 @@ export default function AdminPage() {
         {/* Logo section */}
         <div className="p-5 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <Image src="/logo.PNG" alt="MedBook" width={44} height={44} className="rounded-xl shadow-sm" />
+            <Image src="/logo.PNG" alt="BookMed" width={44} height={44} className="rounded-xl shadow-sm" />
             <div>
-              <h1 className="text-lg font-bold text-gray-800 leading-tight">MedBook</h1>
+              <h1 className="text-lg font-bold text-gray-800 leading-tight">BookMed</h1>
               <span className="inline-flex items-center gap-1 text-xs font-medium text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full mt-0.5">
                 {isFounder
                   ? <><ShieldCheck className="w-3.5 h-3.5" /> Founder</>
@@ -1057,7 +1057,7 @@ export default function AdminPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </button>
-          <h1 className="text-lg font-bold text-gray-800">MedBook Admin</h1>
+          <h1 className="text-lg font-bold text-gray-800">BookMed Admin</h1>
         </header>
 
         {/* Page header */}

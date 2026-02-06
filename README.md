@@ -1,4 +1,4 @@
-# 🏥 MedBook — Medical Appointment Booking System
+# 🏥 BookMed — Medical Appointment Booking System
 
 Tibbiy navbat olish tizimi. NestJS (API) + Next.js (Web) + Telegram Bot + PostgreSQL + Redis.
 
@@ -10,7 +10,7 @@ Tibbiy navbat olish tizimi. NestJS (API) + Next.js (Web) + Telegram Bot + Postgr
 ## 📁 Loyiha tuzilishi
 
 ```
-medbook/
+BookMed/
 ├── apps/
 │   ├── api/          # NestJS backend (port 4000)
 │   │   ├── prisma/   # Schema + Migrations
@@ -115,8 +115,8 @@ sudo apt install -y git
 
 ```bash
 cd /opt
-sudo git clone https://github.com/Bekmuhammad-Devoloper/mydent.uz.git medbook
-cd medbook
+sudo git clone https://github.com/Bekmuhammad-Devoloper/mydent.uz.git BookMed
+cd BookMed
 sudo chown -R $USER:$USER .
 ```
 
@@ -129,7 +129,7 @@ nano apps/api/.env
 
 `.env` ni to'ldiring:
 ```env
-DATABASE_URL="postgresql://postgres:KUCHLI_PAROL@db:5432/medbook?schema=public"
+DATABASE_URL="postgresql://postgres:KUCHLI_PAROL@db:5432/BookMed?schema=public"
 REDIS_HOST="redis"
 REDIS_PORT=6379
 PORT=4000
@@ -167,7 +167,7 @@ sudo certbot --nginx -d mydent.uz -d www.mydent.uz
 ### 7. Yangilash (keyingi deploy)
 
 ```bash
-cd /opt/medbook
+cd /opt/BookMed
 chmod +x deploy.sh
 ./deploy.sh
 ```

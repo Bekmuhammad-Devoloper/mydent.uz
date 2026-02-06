@@ -3,7 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'MedBook - Tibbiy navbat tizimi',
+  title: 'BookMed - Tibbiy navbat tizimi',
   description: 'Online tibbiy navbat olish tizimi',
   icons: {
     icon: '/logo.PNG',

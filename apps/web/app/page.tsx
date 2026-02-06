@@ -10,9 +10,9 @@ export default function HomePage() {
       <div className="max-w-4xl w-full">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
-            <Image src="/logo.PNG" alt="MedBook" width={80} height={80} className="rounded-xl" />
+            <Image src="/logo.PNG" alt="BookMed" width={80} height={80} className="rounded-xl" />
           </div>
-          <h1 className="text-5xl font-bold text-primary-700 mb-4">MedBook</h1>
+          <h1 className="text-5xl font-bold text-primary-700 mb-4">BookMed</h1>
           <p className="text-xl text-gray-600">Tibbiy navbat olish tizimi</p>
           <p className="text-gray-500 mt-2">Система онлайн записи к врачам</p>
         </div>

@@ -1,8 +1,8 @@
 {
-  "name": "medbook",
+  "name": "BookMed",
   "version": "1.0.0",
   "private": true,
-  "description": "MedBook - Medical Appointment Booking System",
+  "description": "BookMed - Medical Appointment Booking System",
   "workspaces": [
     "apps/api",
     "apps/web"

@@ -1,4 +1,4 @@
-п»ї'use client';
+'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
@@ -37,16 +37,16 @@ function LangPage({ onSelect }: { onSelect: (l: 'UZ' | 'RU') => void }) {
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-cyan-100">
       <div className="card max-w-sm w-full text-center">
         <div className="flex justify-center mb-4">
-          <Image src="/logo.PNG" alt="MedBook" width={64} height={64} className="rounded-xl" />
+          <Image src="/logo.PNG" alt="BookMed" width={64} height={64} className="rounded-xl" />
         </div>
-        <h1 className="text-2xl font-bold mb-2">MedBook</h1>
-        <p className="text-gray-500 mb-6">Tilni tanlang / Р’С‹Р±РµСЂРёС‚Рµ СЏР·С‹Рє</p>
+        <h1 className="text-2xl font-bold mb-2">BookMed</h1>
+        <p className="text-gray-500 mb-6">Tilni tanlang / Выберите язык</p>
         <div className="space-y-3">
           <button onClick={() => onSelect('UZ')} className="btn-primary w-full flex items-center justify-center gap-2">
             <Globe className="w-5 h-5" /> {"O'zbek tili"}
           </button>
           <button onClick={() => onSelect('RU')} className="w-full py-3 rounded-lg border border-gray-300 font-medium hover:bg-gray-50 transition flex items-center justify-center gap-2">
-            <Globe className="w-5 h-5" /> Р СѓСЃСЃРєРёР№ СЏР·С‹Рє
+            <Globe className="w-5 h-5" /> Русский язык
           </button>
         </div>
       </div>
@@ -61,7 +61,7 @@ function RegisterPage({ lang, onDone, tgUser }: { lang: 'UZ' | 'RU'; onDone: (u:
   const [loading, setLoading] = useState(false);
   const t = lang === 'UZ'
     ? { title: "Ro'yxatdan o'tish", fn: 'Ism', ln: 'Familiya', btn: 'Davom etish' }
-    : { title: 'Р РµРіРёСЃС‚СЂР°С†РёСЏ', fn: 'РРјСЏ', ln: 'Р¤Р°РјРёР»РёСЏ', btn: 'РџСЂРѕРґРѕР»Р¶РёС‚СЊ' };
+    : { title: 'Регистрация', fn: 'Имя', ln: 'Фамилия', btn: 'Продолжить' };
 
   const handlePhone = (val: string) => {
     let v = val.replace(/[^0-9+]/g, '');
@@ -71,16 +71,16 @@ function RegisterPage({ lang, onDone, tgUser }: { lang: 'UZ' | 'RU'; onDone: (u:
   };
 
   const submit = async () => {
-    if (phone.length !== 13) return toast.error(lang === 'UZ' ? "To'g'ri telefon raqam kiriting" : 'Р’РІРµРґРёС‚Рµ РєРѕСЂСЂРµРєС‚РЅС‹Р№ РЅРѕРјРµСЂ');
+    if (phone.length !== 13) return toast.error(lang === 'UZ' ? "To'g'ri telefon raqam kiriting" : 'Введите корректный номер');
     setLoading(true);
     try {
       const payload: any = { phone, firstName, lastName, language: lang };
       if (tgUser?.id) payload.telegramId = String(tgUser.id);
       const { data } = await registerUser(payload);
-      toast.success(lang === 'UZ' ? 'Muvaffaqiyatli!' : 'РЈСЃРїРµС€РЅРѕ!');
+      toast.success(lang === 'UZ' ? 'Muvaffaqiyatli!' : 'Успешно!');
       onDone(data);
     } catch {
-      toast.error(lang === 'UZ' ? 'Xatolik yuz berdi' : 'РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°');
+      toast.error(lang === 'UZ' ? 'Xatolik yuz berdi' : 'Произошла ошибка');
     }
     setLoading(false);
   };
@@ -89,7 +89,7 @@ function RegisterPage({ lang, onDone, tgUser }: { lang: 'UZ' | 'RU'; onDone: (u:
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 flex items-center justify-center p-4">
       <div className="card max-w-md w-full">
         <div className="flex justify-center mb-4">
-          <Image src="/logo.PNG" alt="MedBook" width={64} height={64} className="rounded-xl" />
+          <Image src="/logo.PNG" alt="BookMed" width={64} height={64} className="rounded-xl" />
         </div>
         <h2 className="text-xl font-bold text-center mb-6">{t.title}</h2>
         {tgUser && (
@@ -146,16 +146,16 @@ function BookingFlow({ user, lang, onBack }: { user: any; lang: 'UZ' | 'RU'; onB
   };
 
   const confirmBooking = async () => {
-    if (!selectedSlot) return toast.error(lang === 'UZ' ? 'Vaqtni tanlang' : 'Р’С‹Р±РµСЂРёС‚Рµ РІСЂРµРјСЏ');
+    if (!selectedSlot) return toast.error(lang === 'UZ' ? 'Vaqtni tanlang' : 'Выберите время');
     setLoading(true);
     try {
       const [startTime, endTime] = selectedSlot.split('-');
       await createAppointment({ userId: user.id, doctorId: selectedDoctor.id, date: selectedDate, startTime: startTime.trim(), endTime: endTime.trim() });
-      toast.success(lang === 'UZ' ? 'Navbat olindi!' : 'Р—Р°РїРёСЃСЊ СЃРѕР·РґР°РЅР°!');
+      toast.success(lang === 'UZ' ? 'Navbat olindi!' : 'Запись создана!');
       const tg = getTg();
-      if (tg) { tg.showAlert(lang === 'UZ' ? 'Navbat muvaffaqiyatli olindi!' : 'Р—Р°РїРёСЃСЊ СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅР°!', () => tg.close()); }
+      if (tg) { tg.showAlert(lang === 'UZ' ? 'Navbat muvaffaqiyatli olindi!' : 'Запись успешно создана!', () => tg.close()); }
       else onBack();
-    } catch { toast.error(lang === 'UZ' ? 'Xatolik' : 'РћС€РёР±РєР°'); }
+    } catch { toast.error(lang === 'UZ' ? 'Xatolik' : 'Ошибка'); }
     setLoading(false);
   };
 
@@ -183,64 +183,64 @@ function BookingFlow({ user, lang, onBack }: { user: any; lang: 'UZ' | 'RU'; onB
         <div className="flex gap-1">{allSteps.map((_, i) => (<div key={i} className={`h-1.5 flex-1 rounded-full ${i <= idx ? 'bg-blue-500' : 'bg-gray-200'}`} />))}</div>
         <p className="text-xs text-gray-400 text-center mt-1">{idx + 1}/{allSteps.length}</p>
       </div>
-      {!isTg() && (<button onClick={goBack} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'РќР°Р·Р°Рґ'}</button>)}
+      {!isTg() && (<button onClick={goBack} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'Назад'}</button>)}
 
       {step === 'region' && (
         <div>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><MapPin className="w-6 h-6 text-blue-600" /> {lang === 'UZ' ? 'Hududni tanlang' : 'Р’С‹Р±РµСЂРёС‚Рµ СЂРµРіРёРѕРЅ'}</h2>
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><MapPin className="w-6 h-6 text-blue-600" /> {lang === 'UZ' ? 'Hududni tanlang' : 'Выберите регион'}</h2>
           <div className="space-y-2">{regions.map((r: any) => (<button key={r.id} onClick={() => pickRegion(r)} className="w-full text-left p-4 bg-white rounded-lg border hover:border-blue-400 hover:shadow-sm transition font-medium">{nm(r)}</button>))}</div>
         </div>
       )}
 
       {step === 'clinic' && (
         <div>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Building2 className="w-6 h-6 text-green-600" /> {lang === 'UZ' ? 'Klinikani tanlang' : 'Р’С‹Р±РµСЂРёС‚Рµ РєР»РёРЅРёРєСѓ'}</h2>
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Building2 className="w-6 h-6 text-green-600" /> {lang === 'UZ' ? 'Klinikani tanlang' : 'Выберите клинику'}</h2>
           <div className="space-y-2">
             {clinics.map((c: any) => (<button key={c.id} onClick={() => pickClinic(c)} className="w-full text-left p-4 bg-white rounded-lg border hover:border-green-400 hover:shadow-sm transition"><div className="font-medium">{nm(c)}</div>{c.address && <div className="text-sm text-gray-400 mt-1"><MapPin className="w-3 h-3 inline" /> {c.address}</div>}</button>))}
-            {clinics.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Klinikalar topilmadi' : 'РљР»РёРЅРёРєРё РЅРµ РЅР°Р№РґРµРЅС‹'}</p>}
+            {clinics.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Klinikalar topilmadi' : 'Клиники не найдены'}</p>}
           </div>
         </div>
       )}
 
       {step === 'specialty' && (
         <div>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Award className="w-6 h-6 text-purple-600" /> {lang === 'UZ' ? 'Mutaxassislikni tanlang' : 'Р’С‹Р±РµСЂРёС‚Рµ СЃРїРµС†РёР°Р»СЊРЅРѕСЃС‚СЊ'}</h2>
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Award className="w-6 h-6 text-purple-600" /> {lang === 'UZ' ? 'Mutaxassislikni tanlang' : 'Выберите специальность'}</h2>
           <div className="space-y-2">
             {specialties.map((s: any) => (<button key={s.id} onClick={() => pickSpecialty(s)} className="w-full text-left p-4 bg-white rounded-lg border hover:border-purple-400 hover:shadow-sm transition font-medium">{nm(s)}</button>))}
-            {specialties.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Mutaxassisliklar topilmadi' : 'РЎРїРµС†РёР°Р»СЊРЅРѕСЃС‚Рё РЅРµ РЅР°Р№РґРµРЅС‹'}</p>}
+            {specialties.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Mutaxassisliklar topilmadi' : 'Специальности не найдены'}</p>}
           </div>
         </div>
       )}
 
       {step === 'doctor' && (
         <div>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Stethoscope className="w-6 h-6 text-teal-600" /> {lang === 'UZ' ? 'Shifokorni tanlang' : 'Р’С‹Р±РµСЂРёС‚Рµ РІСЂР°С‡Р°'}</h2>
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Stethoscope className="w-6 h-6 text-teal-600" /> {lang === 'UZ' ? 'Shifokorni tanlang' : 'Выберите врача'}</h2>
           <div className="space-y-3">
             {doctors.map((d: any) => (
               <button key={d.id} onClick={() => pickDoctor(d)} className="w-full text-left p-4 bg-white rounded-lg border hover:border-teal-400 hover:shadow-sm transition">
                 <div className="font-bold text-gray-800">{d.firstName} {d.lastName}</div>
                 <div className="text-sm text-gray-500 mt-1 flex flex-wrap gap-3">
                   <span className="flex items-center gap-1"><Award className="w-3 h-3" /> {sp(d)}</span>
-                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {d.experienceYears} {lang === 'UZ' ? 'yil' : 'Р»РµС‚'}</span>
-                  <span className="flex items-center gap-1"><Banknote className="w-3 h-3" /> {d.price?.toLocaleString()} {lang === 'UZ' ? "so'm" : 'СЃСѓРј'}</span>
+                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {d.experienceYears} {lang === 'UZ' ? 'yil' : 'лет'}</span>
+                  <span className="flex items-center gap-1"><Banknote className="w-3 h-3" /> {d.price?.toLocaleString()} {lang === 'UZ' ? "so'm" : 'сум'}</span>
                 </div>
               </button>
             ))}
-            {doctors.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Shifokorlar topilmadi' : 'Р’СЂР°С‡Рё РЅРµ РЅР°Р№РґРµРЅС‹'}</p>}
+            {doctors.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Shifokorlar topilmadi' : 'Врачи не найдены'}</p>}
           </div>
         </div>
       )}
 
       {step === 'date' && (
         <div>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Calendar className="w-6 h-6 text-indigo-600" /> {lang === 'UZ' ? 'Sana va vaqt' : 'Р”Р°С‚Р° Рё РІСЂРµРјСЏ'}</h2>
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Calendar className="w-6 h-6 text-indigo-600" /> {lang === 'UZ' ? 'Sana va vaqt' : 'Дата и время'}</h2>
           <div className="mb-4">
-            <label className="text-sm text-gray-600 mb-1 block">{lang === 'UZ' ? 'Sanani tanlang' : 'Р’С‹Р±РµСЂРёС‚Рµ РґР°С‚Сѓ'}</label>
+            <label className="text-sm text-gray-600 mb-1 block">{lang === 'UZ' ? 'Sanani tanlang' : 'Выберите дату'}</label>
             <input type="date" min={today} value={selectedDate} onChange={(e) => loadSlots(e.target.value)} className="input" />
           </div>
           {selectedDate && (
             <div>
-              <p className="text-sm text-gray-600 mb-2">{lang === 'UZ' ? "Bo'sh vaqtlar" : 'РЎРІРѕР±РѕРґРЅРѕРµ РІСЂРµРјСЏ'}:</p>
+              <p className="text-sm text-gray-600 mb-2">{lang === 'UZ' ? "Bo'sh vaqtlar" : 'Свободное время'}:</p>
               {slots.length > 0 ? (
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                   {slots.map((s: any) => {
@@ -249,7 +249,7 @@ function BookingFlow({ user, lang, onBack }: { user: any; lang: 'UZ' | 'RU'; onB
                   })}
                 </div>
               ) : (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-center"><p className="text-sm text-red-600 font-medium">{lang === 'UZ' ? 'Dam olish kuni' : 'Р’С‹С…РѕРґРЅРѕР№'}</p></div>
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-center"><p className="text-sm text-red-600 font-medium">{lang === 'UZ' ? 'Dam olish kuni' : 'Выходной'}</p></div>
               )}
             </div>
           )}
@@ -258,16 +258,16 @@ function BookingFlow({ user, lang, onBack }: { user: any; lang: 'UZ' | 'RU'; onB
 
       {step === 'confirm' && selectedDoctor && (
         <div>
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><CheckCircle className="w-6 h-6 text-green-600" /> {lang === 'UZ' ? 'Tasdiqlash' : 'РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ'}</h2>
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><CheckCircle className="w-6 h-6 text-green-600" /> {lang === 'UZ' ? 'Tasdiqlash' : 'Подтверждение'}</h2>
           <div className="bg-white rounded-lg border p-5 space-y-3 mb-4">
-            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Shifokor' : 'Р’СЂР°С‡'}</span><span className="font-medium">{selectedDoctor.firstName} {selectedDoctor.lastName}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Mutaxassislik' : 'РЎРїРµС†РёР°Р»СЊРЅРѕСЃС‚СЊ'}</span><span className="font-medium">{sp(selectedDoctor)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Klinika' : 'РљР»РёРЅРёРєР°'}</span><span className="font-medium">{nm(selectedClinic)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Sana' : 'Р”Р°С‚Р°'}</span><span className="font-medium">{selectedDate}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Vaqt' : 'Р’СЂРµРјСЏ'}</span><span className="font-medium">{selectedSlot}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Narx' : 'РЎС‚РѕРёРјРѕСЃС‚СЊ'}</span><span className="font-bold text-green-600">{selectedDoctor.price?.toLocaleString()} {lang === 'UZ' ? "so'm" : 'СЃСѓРј'}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Shifokor' : 'Врач'}</span><span className="font-medium">{selectedDoctor.firstName} {selectedDoctor.lastName}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Mutaxassislik' : 'Специальность'}</span><span className="font-medium">{sp(selectedDoctor)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Klinika' : 'Клиника'}</span><span className="font-medium">{nm(selectedClinic)}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Sana' : 'Дата'}</span><span className="font-medium">{selectedDate}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Vaqt' : 'Время'}</span><span className="font-medium">{selectedSlot}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">{lang === 'UZ' ? 'Narx' : 'Стоимость'}</span><span className="font-bold text-green-600">{selectedDoctor.price?.toLocaleString()} {lang === 'UZ' ? "so'm" : 'сум'}</span></div>
           </div>
-          <button onClick={confirmBooking} disabled={loading} className="btn-primary w-full">{loading ? '...' : lang === 'UZ' ? 'Tasdiqlash' : 'РџРѕРґС‚РІРµСЂРґРёС‚СЊ'}</button>
+          <button onClick={confirmBooking} disabled={loading} className="btn-primary w-full">{loading ? '...' : lang === 'UZ' ? 'Tasdiqlash' : 'Подтвердить'}</button>
         </div>
       )}
     </div>
@@ -281,16 +281,16 @@ function AppointmentsList({ user, lang }: { user: any; lang: 'UZ' | 'RU' }) {
   useEffect(() => { load(); }, [load]);
 
   const cancel = async (appId: string) => {
-    if (!confirm(lang === 'UZ' ? 'Bekor qilinsinmi?' : 'РћС‚РјРµРЅРёС‚СЊ?')) return;
-    try { await cancelUserAppointment(user.id, appId); toast.success(lang === 'UZ' ? 'Bekor qilindi' : 'РћС‚РјРµРЅРµРЅРѕ'); load(); } catch { toast.error('Xatolik'); }
+    if (!confirm(lang === 'UZ' ? 'Bekor qilinsinmi?' : 'Отменить?')) return;
+    try { await cancelUserAppointment(user.id, appId); toast.success(lang === 'UZ' ? 'Bekor qilindi' : 'Отменено'); load(); } catch { toast.error('Xatolik'); }
   };
 
   const badge = (s: string) => {
     const m: Record<string, { c: string; l: string }> = {
-      PENDING: { c: 'bg-yellow-100 text-yellow-700', l: lang === 'UZ' ? 'Kutilmoqda' : 'РћР¶РёРґР°РЅРёРµ' },
-      ACCEPTED: { c: 'bg-blue-100 text-blue-700', l: lang === 'UZ' ? 'Qabul qilindi' : 'РџСЂРёРЅСЏС‚' },
-      COMPLETED: { c: 'bg-green-100 text-green-700', l: lang === 'UZ' ? 'Tugallandi' : 'Р—Р°РІРµСЂС€С‘РЅ' },
-      CANCELLED: { c: 'bg-red-100 text-red-700', l: lang === 'UZ' ? 'Bekor qilingan' : 'РћС‚РјРµРЅС‘РЅ' },
+      PENDING: { c: 'bg-yellow-100 text-yellow-700', l: lang === 'UZ' ? 'Kutilmoqda' : 'Ожидание' },
+      ACCEPTED: { c: 'bg-blue-100 text-blue-700', l: lang === 'UZ' ? 'Qabul qilindi' : 'Принят' },
+      COMPLETED: { c: 'bg-green-100 text-green-700', l: lang === 'UZ' ? 'Tugallandi' : 'Завершён' },
+      CANCELLED: { c: 'bg-red-100 text-red-700', l: lang === 'UZ' ? 'Bekor qilingan' : 'Отменён' },
     };
     const b = m[s] || m.PENDING;
     return <span className={`px-2 py-1 rounded-full text-xs font-medium ${b.c}`}>{b.l}</span>;
@@ -299,7 +299,7 @@ function AppointmentsList({ user, lang }: { user: any; lang: 'UZ' | 'RU' }) {
   if (loading) return <p className="text-center text-gray-400 py-8">...</p>;
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><CalendarDays className="w-6 h-6 text-blue-600" /> {lang === 'UZ' ? 'Navbatlarim' : 'РњРѕРё Р·Р°РїРёСЃРё'}</h2>
+      <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><CalendarDays className="w-6 h-6 text-blue-600" /> {lang === 'UZ' ? 'Navbatlarim' : 'Мои записи'}</h2>
       <div className="space-y-3">
         {list.map((a: any) => (
           <div key={a.id} className="bg-white rounded-lg border p-4">
@@ -307,22 +307,22 @@ function AppointmentsList({ user, lang }: { user: any; lang: 'UZ' | 'RU' }) {
               <div>
                 <div className="font-bold text-gray-800">{a.doctor?.firstName} {a.doctor?.lastName}</div>
                 <div className="text-sm text-gray-500 mt-1">{a.date?.split('T')[0]} | {a.startTime} - {a.endTime}</div>
-                <div className="text-sm text-green-600 font-medium mt-1">{(a.finalPrice ?? a.doctor?.price ?? 0).toLocaleString()} {lang === 'UZ' ? "so'm" : 'СЃСѓРј'}</div>
+                <div className="text-sm text-green-600 font-medium mt-1">{(a.finalPrice ?? a.doctor?.price ?? 0).toLocaleString()} {lang === 'UZ' ? "so'm" : 'сум'}</div>
               </div>
               {badge(a.status)}
             </div>
             {a.status === 'COMPLETED' && a.diagnosis && (
               <div className="mt-3 bg-green-50 rounded-lg p-3 border border-green-200 text-sm space-y-1">
-                <p className="text-green-800"><strong>{lang === 'UZ' ? 'Tashxis:' : 'Р”РёР°РіРЅРѕР·:'}</strong> {a.diagnosis.description}</p>
-                {a.diagnosis.prescription && <p className="text-green-700"><strong>{lang === 'UZ' ? 'Dorilar:' : 'Р РµС†РµРїС‚:'}</strong> {a.diagnosis.prescription}</p>}
+                <p className="text-green-800"><strong>{lang === 'UZ' ? 'Tashxis:' : 'Диагноз:'}</strong> {a.diagnosis.description}</p>
+                {a.diagnosis.prescription && <p className="text-green-700"><strong>{lang === 'UZ' ? 'Dorilar:' : 'Рецепт:'}</strong> {a.diagnosis.prescription}</p>}
               </div>
             )}
             {a.status === 'PENDING' && (
-              <button onClick={() => cancel(a.id)} className="mt-3 text-sm text-red-500 hover:text-red-700 flex items-center gap-1"><XCircle className="w-4 h-4" /> {lang === 'UZ' ? 'Bekor qilish' : 'РћС‚РјРµРЅРёС‚СЊ'}</button>
+              <button onClick={() => cancel(a.id)} className="mt-3 text-sm text-red-500 hover:text-red-700 flex items-center gap-1"><XCircle className="w-4 h-4" /> {lang === 'UZ' ? 'Bekor qilish' : 'Отменить'}</button>
             )}
           </div>
         ))}
-        {list.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Navbatlar topilmadi' : 'Р—Р°РїРёСЃРµР№ РЅРµС‚'}</p>}
+        {list.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Navbatlar topilmadi' : 'Записей нет'}</p>}
       </div>
     </div>
   );
@@ -335,17 +335,17 @@ function DiagnosesList({ user, lang }: { user: any; lang: 'UZ' | 'RU' }) {
   if (loading) return <p className="text-center text-gray-400 py-8">...</p>;
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><FileText className="w-6 h-6 text-green-600" /> {lang === 'UZ' ? 'Tashxislarim' : 'РњРѕРё РґРёР°РіРЅРѕР·С‹'}</h2>
+      <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><FileText className="w-6 h-6 text-green-600" /> {lang === 'UZ' ? 'Tashxislarim' : 'Мои диагнозы'}</h2>
       <div className="space-y-3">
         {list.map((d: any) => (
           <div key={d.id} className="bg-white rounded-lg border p-4">
             <div className="font-bold text-gray-800">{d.doctor?.firstName} {d.doctor?.lastName}</div>
             <div className="text-sm text-gray-500 mt-1">{d.createdAt?.split('T')[0]}</div>
-            <p className="mt-2 text-gray-700"><strong>{lang === 'UZ' ? 'Tashxis:' : 'Р”РёР°РіРЅРѕР·:'}</strong> {d.description}</p>
-            {d.prescription && <p className="mt-1 text-gray-600 text-sm"><strong>{lang === 'UZ' ? 'Dorilar:' : 'Р РµС†РµРїС‚:'}</strong> {d.prescription}</p>}
+            <p className="mt-2 text-gray-700"><strong>{lang === 'UZ' ? 'Tashxis:' : 'Диагноз:'}</strong> {d.description}</p>
+            {d.prescription && <p className="mt-1 text-gray-600 text-sm"><strong>{lang === 'UZ' ? 'Dorilar:' : 'Рецепт:'}</strong> {d.prescription}</p>}
           </div>
         ))}
-        {list.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Tashxislar topilmadi' : 'Р”РёР°РіРЅРѕР·РѕРІ РЅРµС‚'}</p>}
+        {list.length === 0 && <p className="text-gray-400 text-center py-8">{lang === 'UZ' ? 'Tashxislar topilmadi' : 'Диагнозов нет'}</p>}
       </div>
     </div>
   );
@@ -365,21 +365,21 @@ function UserMenu({ user, lang, onLogout }: { user: any; lang: 'UZ' | 'RU'; onLo
   if (view === 'booking') return <div className="min-h-screen bg-gray-50 p-4"><BookingFlow user={user} lang={lang} onBack={() => setView('menu')} /></div>;
   if (view === 'appointments') return (
     <div className="min-h-screen bg-gray-50 p-4"><div className="max-w-2xl mx-auto">
-      {!isTg() && <button onClick={() => setView('menu')} className="flex items-center gap-2 text-blue-600 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'РќР°Р·Р°Рґ'}</button>}
+      {!isTg() && <button onClick={() => setView('menu')} className="flex items-center gap-2 text-blue-600 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'Назад'}</button>}
       <AppointmentsList user={user} lang={lang} />
     </div></div>
   );
   if (view === 'diagnoses') return (
     <div className="min-h-screen bg-gray-50 p-4"><div className="max-w-2xl mx-auto">
-      {!isTg() && <button onClick={() => setView('menu')} className="flex items-center gap-2 text-blue-600 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'РќР°Р·Р°Рґ'}</button>}
+      {!isTg() && <button onClick={() => setView('menu')} className="flex items-center gap-2 text-blue-600 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'Назад'}</button>}
       <DiagnosesList user={user} lang={lang} />
     </div></div>
   );
 
   const items = [
-    { key: 'booking', icon: <CalendarDays className="w-8 h-8 text-blue-600" />, title: lang === 'UZ' ? 'Navbat olish' : 'Р—Р°РїРёСЃР°С‚СЊСЃСЏ', desc: lang === 'UZ' ? 'Shifokorga yozilish' : 'Р—Р°РїРёСЃСЊ Рє РІСЂР°С‡Сѓ', color: 'hover:border-blue-400' },
-    { key: 'appointments', icon: <ClipboardList className="w-8 h-8 text-purple-600" />, title: lang === 'UZ' ? 'Navbatlarim' : 'РњРѕРё Р·Р°РїРёСЃРё', desc: lang === 'UZ' ? 'Barcha navbatlar' : 'Р’СЃРµ Р·Р°РїРёСЃРё', color: 'hover:border-purple-400' },
-    { key: 'diagnoses', icon: <FileText className="w-8 h-8 text-green-600" />, title: lang === 'UZ' ? 'Tashxislarim' : 'РњРѕРё РґРёР°РіРЅРѕР·С‹', desc: lang === 'UZ' ? 'Shifokor xulosalari' : 'Р—Р°РєР»СЋС‡РµРЅРёСЏ РІСЂР°С‡РµР№', color: 'hover:border-green-400' },
+    { key: 'booking', icon: <CalendarDays className="w-8 h-8 text-blue-600" />, title: lang === 'UZ' ? 'Navbat olish' : 'Записаться', desc: lang === 'UZ' ? 'Shifokorga yozilish' : 'Запись к врачу', color: 'hover:border-blue-400' },
+    { key: 'appointments', icon: <ClipboardList className="w-8 h-8 text-purple-600" />, title: lang === 'UZ' ? 'Navbatlarim' : 'Мои записи', desc: lang === 'UZ' ? 'Barcha navbatlar' : 'Все записи', color: 'hover:border-purple-400' },
+    { key: 'diagnoses', icon: <FileText className="w-8 h-8 text-green-600" />, title: lang === 'UZ' ? 'Tashxislarim' : 'Мои диагнозы', desc: lang === 'UZ' ? 'Shifokor xulosalari' : 'Заключения врачей', color: 'hover:border-green-400' },
   ];
 
   return (
@@ -387,10 +387,10 @@ function UserMenu({ user, lang, onLogout }: { user: any; lang: 'UZ' | 'RU'; onLo
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Image src="/logo.PNG" alt="MedBook" width={36} height={36} className="rounded-lg" />
-            <div><h1 className="text-lg font-bold text-gray-800">MedBook</h1><p className="text-xs text-gray-500">{user.firstName} {user.lastName}</p></div>
+            <Image src="/logo.PNG" alt="BookMed" width={36} height={36} className="rounded-lg" />
+            <div><h1 className="text-lg font-bold text-gray-800">BookMed</h1><p className="text-xs text-gray-500">{user.firstName} {user.lastName}</p></div>
           </div>
-          {!isTg() && <button onClick={onLogout} className="flex items-center gap-2 text-red-500 hover:text-red-700 text-sm"><LogOut className="w-4 h-4" /> {lang === 'UZ' ? 'Chiqish' : 'Р’С‹С…РѕРґ'}</button>}
+          {!isTg() && <button onClick={onLogout} className="flex items-center gap-2 text-red-500 hover:text-red-700 text-sm"><LogOut className="w-4 h-4" /> {lang === 'UZ' ? 'Chiqish' : 'Выход'}</button>}
         </div>
       </header>
       <div className="max-w-2xl mx-auto px-4 mt-6 space-y-3">
@@ -432,7 +432,7 @@ export default function UserPage() {
 
   const TgScript = <Script src="https://telegram.org/js/telegram-web-app.js" strategy="afterInteractive" onLoad={onSdkLoad} />;
 
-  if (!_hasHydrated || !ready) return <>{TgScript}<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100"><div className="text-center"><div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-600 border-t-transparent mx-auto" /><p className="text-sm text-gray-500 mt-3">MedBook</p></div></div></>;
+  if (!_hasHydrated || !ready) return <>{TgScript}<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100"><div className="text-center"><div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-600 border-t-transparent mx-auto" /><p className="text-sm text-gray-500 mt-3">BookMed</p></div></div></>;
   if (!lang) return <>{TgScript}<LangPage onSelect={setLang} /></>;
   if (!currentUser) return <>{TgScript}<RegisterPage lang={lang} onDone={setCurrentUser} tgUser={tgUser} /></>;
   return <>{TgScript}<UserMenu user={currentUser} lang={lang} onLogout={() => { clearUser(); setLang(null); }} /></>;

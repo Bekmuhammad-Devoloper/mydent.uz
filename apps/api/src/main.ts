@@ -25,7 +25,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
-    .setTitle('MedBook API')
+    .setTitle('BookMed API')
     .setDescription('Medical Appointment Booking System API')
     .setVersion('1.0')
     .build();
@@ -34,7 +34,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 4000;
   await app.listen(port);
-  console.log(`🚀 MedBook API running on http://localhost:${port}`);
+  console.log(`🚀 BookMed API running on http://localhost:${port}`);
   console.log(`📚 Swagger docs: http://localhost:${port}/api/docs`);
 }
 bootstrap();

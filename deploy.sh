@@ -1,9 +1,9 @@
 #!/bin/bash
-# ─── MedBook VPS Deploy Script (PM2) ────────────────
+# ─── BookMed VPS Deploy Script (PM2) ────────────────
 # Ishlatish: chmod +x deploy.sh && ./deploy.sh
 set -e
 
-echo "🚀 MedBook Deploy boshlandi..."
+echo "🚀 BookMed Deploy boshlandi..."
 
 # 1. Pull latest
 echo "📥 Git pull..."

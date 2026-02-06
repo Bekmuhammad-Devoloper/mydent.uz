@@ -35,8 +35,8 @@ export class BotService implements OnModuleInit {
   private t(lang: 'UZ' | 'RU' | undefined, key: string): string {
     const map: Record<string, Record<string, string>> = {
       welcome: {
-        UZ: "🏥 *MedBook* — Tibbiy navbat tizimi\n\nTilni tanlang:",
-        RU: "🏥 *MedBook* — Система медицинской записи\n\nВыберите язык:",
+        UZ: "🏥 *BookMed* — Tibbiy navbat tizimi\n\nTilni tanlang:",
+        RU: "🏥 *BookMed* — Система медицинской записи\n\nВыберите язык:",
       },
       lang_set: { UZ: "✅ Til tanlandi: O'zbek", RU: "✅ Язык выбран: Русский" },
       send_phone: {
@@ -324,7 +324,7 @@ export class BotService implements OnModuleInit {
 
   /* ══════════════════ Main Menu ══════════════════ */
   private async showMainMenu(ctx: any, s: Session) {
-    const text = `🏥 *MedBook*\n\n${this.t(s.lang, 'main_menu')}`;
+    const text = `🏥 *BookMed*\n\n${this.t(s.lang, 'main_menu')}`;
     const kb = Markup.inlineKeyboard([
       [Markup.button.webApp('🌐 ' + (s.lang === 'RU' ? 'Открыть приложение' : 'Ilovani ochish'), 'https://mydent.uz/user')],
       [Markup.button.callback(this.t(s.lang, 'book'), 'book')],

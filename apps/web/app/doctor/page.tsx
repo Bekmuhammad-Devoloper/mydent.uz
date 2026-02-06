@@ -51,7 +51,7 @@ function DoctorLogin({ onLogin }: { onLogin: (d: any) => void }) {
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-100 flex items-center justify-center p-4">
       <div className="card max-w-md w-full">
         <div className="flex justify-center mb-4">
-          <Image src="/logo.PNG" alt="MedBook" width={64} height={64} className="rounded-xl" />
+          <Image src="/logo.PNG" alt="BookMed" width={64} height={64} className="rounded-xl" />
         </div>
         <h1 className="text-2xl font-bold text-center mb-2">Shifokor Panel</h1>
         <p className="text-gray-500 text-center mb-6">Tizimga kirish</p>
@@ -777,9 +777,9 @@ export default function DoctorPage() {
         {/* Logo section */}
         <div className="p-5 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <Image src="/logo.PNG" alt="MedBook" width={44} height={44} className="rounded-xl shadow-sm" />
+            <Image src="/logo.PNG" alt="BookMed" width={44} height={44} className="rounded-xl shadow-sm" />
             <div>
-              <h1 className="text-lg font-bold text-gray-800 leading-tight">MedBook</h1>
+              <h1 className="text-lg font-bold text-gray-800 leading-tight">BookMed</h1>
               <span className="inline-flex items-center gap-1 text-xs font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full mt-0.5">
                 <Stethoscope className="w-3.5 h-3.5" /> Shifokor
               </span>
@@ -851,7 +851,7 @@ export default function DoctorPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
           </button>
-          <h1 className="text-lg font-bold text-gray-800">MedBook</h1>
+          <h1 className="text-lg font-bold text-gray-800">BookMed</h1>
         </header>
 
         {/* Page header */}
