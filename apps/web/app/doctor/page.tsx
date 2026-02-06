@@ -291,7 +291,6 @@ function AppointmentsTab({ doctor }: { doctor: any }) {
           </div>
         </div>
       )}
-      )}
     </div>
   );
 }
