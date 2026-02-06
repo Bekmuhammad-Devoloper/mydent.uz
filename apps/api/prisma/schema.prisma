@@ -1,0 +1,238 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+// ─── Enums ──────────────────────────────────────────
+
+enum Language {
+    UZ
+    RU
+}
+
+enum Role {
+    FOUNDER
+    CLINIC_OWNER
+}
+
+enum AppointmentStatus {
+    PENDING
+    ACCEPTED
+    COMPLETED
+    CANCELLED
+}
+
+// ─── Region ─────────────────────────────────────────
+
+model Region {
+    id        String   @id @default(uuid())
+    nameUz    String
+    nameRu    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    clinics Clinic[]
+    users   User[]
+
+    @@map("regions")
+}
+
+// ─── Clinic ─────────────────────────────────────────
+
+model Clinic {
+    id        String   @id @default(uuid())
+    nameUz    String
+    nameRu    String
+    address   String?
+    phone     String?
+    regionId  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    region  Region       @relation(fields: [regionId], references: [id])
+    owner   ClinicOwner?
+    doctors Doctor[]
+
+    @@map("clinics")
+}
+
+// ─── Admin / Clinic Owner ───────────────────────────
+
+model Admin {
+    id        String   @id @default(uuid())
+    phone     String   @unique
+    password  String
+    role      Role     @default(FOUNDER)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("admins")
+}
+
+model ClinicOwner {
+    id        String   @id @default(uuid())
+    phone     String   @unique
+    password  String
+    clinicId  String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    clinic Clinic @relation(fields: [clinicId], references: [id])
+
+    @@map("clinic_owners")
+}
+
+// ─── Specialty (managed by Founder) ─────────────────
+
+model Specialty {
+    id        String   @id @default(uuid())
+    nameUz    String
+    nameRu    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    doctors Doctor[]
+
+    @@map("specialties")
+}
+
+// ─── Doctor ─────────────────────────────────────────
+
+model Doctor {
+    id              String   @id @default(uuid())
+    firstName       String
+    lastName        String
+    phone           String   @unique
+    password        String
+    photo           String?
+    room            String?
+    specialtyId     String
+    experienceYears Int      @default(0)
+    price           Int      @default(0)
+    avgServiceMin   Int      @default(30)
+    clinicId        String
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    specialty    Specialty     @relation(fields: [specialtyId], references: [id])
+    clinic       Clinic        @relation(fields: [clinicId], references: [id])
+    appointments Appointment[]
+    timeOffs     TimeOff[]
+    reviews      Review[]
+    diagnoses    Diagnosis[]
+    schedules    Schedule[]
+
+    @@map("doctors")
+}
+
+// ─── Schedule (static daily work hours) ─────────────
+
+model Schedule {
+    id        String   @id @default(uuid())
+    doctorId  String
+    dayOfWeek Int // 0=Sunday … 6=Saturday
+    startTime String // "09:00"
+    endTime   String // "18:00"
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+    @@unique([doctorId, dayOfWeek])
+    @@map("schedules")
+}
+
+// ─── TimeOff (doctor rest / day-off) ────────────────
+
+model TimeOff {
+    id        String   @id @default(uuid())
+    doctorId  String
+    date      DateTime @db.Date
+    startTime String? // null = full day off
+    endTime   String?
+    reason    String?
+    createdAt DateTime @default(now())
+
+    doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+    @@map("time_offs")
+}
+
+// ─── User (patient / bot user) ──────────────────────
+
+model User {
+    id         String   @id @default(uuid())
+    phone      String   @unique
+    firstName  String?
+    lastName   String?
+    language   Language @default(UZ)
+    regionId   String?
+    telegramId BigInt?  @unique
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    region       Region?       @relation(fields: [regionId], references: [id])
+    appointments Appointment[]
+    reviews      Review[]
+
+    @@map("users")
+}
+
+// ─── Appointment ────────────────────────────────────
+
+model Appointment {
+    id           String            @id @default(uuid())
+    userId       String?
+    doctorId     String
+    date         DateTime          @db.Date
+    startTime    String // "09:00"
+    endTime      String // "09:30"
+    status       AppointmentStatus @default(PENDING)
+    patientName  String?
+    patientPhone String?
+    finalPrice   Int?
+    createdAt    DateTime          @default(now())
+    updatedAt    DateTime          @updatedAt
+
+    user      User?      @relation(fields: [userId], references: [id])
+    doctor    Doctor     @relation(fields: [doctorId], references: [id])
+    diagnosis Diagnosis?
+
+    @@map("appointments")
+}
+
+// ─── Diagnosis ──────────────────────────────────────
+
+model Diagnosis {
+    id            String   @id @default(uuid())
+    appointmentId String   @unique
+    doctorId      String
+    description   String
+    prescription  String?
+    createdAt     DateTime @default(now())
+
+    appointment Appointment @relation(fields: [appointmentId], references: [id])
+    doctor      Doctor      @relation(fields: [doctorId], references: [id])
+
+    @@map("diagnoses")
+}
+
+// ─── Review ─────────────────────────────────────────
+
+model Review {
+    id        String   @id @default(uuid())
+    userId    String
+    doctorId  String
+    rating    Int // 1-5
+    comment   String?
+    createdAt DateTime @default(now())
+
+    user   User   @relation(fields: [userId], references: [id])
+    doctor Doctor @relation(fields: [doctorId], references: [id])
+
+    @@map("reviews")
+}
