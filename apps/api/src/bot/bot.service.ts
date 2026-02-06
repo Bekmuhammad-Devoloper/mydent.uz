@@ -171,7 +171,7 @@ export class BotService implements OnModuleInit {
       s.step = 'menu';
 
       await ctx.reply(this.t(s.lang, 'registered'), { reply_markup: { remove_keyboard: true } });
-      await this.showMainMenu(ctx, s);
+      await this.showMainMenu(ctx, s, true);
     });
 
     // ── Main menu actions ──
@@ -306,7 +306,7 @@ export class BotService implements OnModuleInit {
         this.t(s.lang, 'lang_set'),
         { reply_markup: { remove_keyboard: true } },
       );
-      await this.showMainMenu(ctx, s);
+      await this.showMainMenu(ctx, s, true);
       return;
     }
 
@@ -323,7 +323,7 @@ export class BotService implements OnModuleInit {
   }
 
   /* ══════════════════ Main Menu ══════════════════ */
-  private async showMainMenu(ctx: any, s: Session) {
+  private async showMainMenu(ctx: any, s: Session, forceReply = false) {
     const text = `🏥 *BookMed*\n\n${this.t(s.lang, 'main_menu')}`;
     const kb = Markup.inlineKeyboard([
       [Markup.button.webApp('🌐 ' + (s.lang === 'RU' ? 'Открыть приложение' : 'Ilovani ochish'), 'https://mydent.uz/user')],
@@ -332,8 +332,12 @@ export class BotService implements OnModuleInit {
       [Markup.button.callback(this.t(s.lang, 'my_diagnoses'), 'my_diagnoses')],
       [Markup.button.callback(this.t(s.lang, 'settings'), 'change_lang')],
     ]);
-    try { await ctx.editMessageText(text, { parse_mode: 'Markdown', ...kb }); }
-    catch { await ctx.replyWithMarkdown(text, kb); }
+    if (forceReply) {
+      await ctx.replyWithMarkdown(text, kb);
+    } else {
+      try { await ctx.editMessageText(text, { parse_mode: 'Markdown', ...kb }); }
+      catch { await ctx.replyWithMarkdown(text, kb); }
+    }
   }
 
   /* ══════════════════ Booking Flow ══════════════════ */
