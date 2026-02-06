@@ -327,6 +327,7 @@ export class BotService implements OnModuleInit {
   private async showMainMenu(ctx: any, s: Session) {
     const text = `🏥 *MedBook*\n\n${this.t(s.lang, 'main_menu')}`;
     const kb = Markup.inlineKeyboard([
+      [Markup.button.webApp('🌐 ' + (s.lang === 'RU' ? 'Открыть приложение' : 'Ilovani ochish'), 'https://mydent.uz/user')],
       [Markup.button.callback(this.t(s.lang, 'book'), 'book')],
       [Markup.button.callback(this.t(s.lang, 'my_appointments'), 'my_appointments')],
       [Markup.button.callback(this.t(s.lang, 'my_diagnoses'), 'my_diagnoses')],

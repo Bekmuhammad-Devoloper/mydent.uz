@@ -20,6 +20,12 @@ export class UsersController {
     return this.usersService.findByPhone(phone);
   }
 
+  @Get('by-telegram/:telegramId')
+  @ApiOperation({ summary: 'Get user by Telegram ID' })
+  findByTelegramId(@Param('telegramId') telegramId: string) {
+    return this.usersService.findByTelegramId(telegramId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get user by ID' })
   findById(@Param('id') id: string) {

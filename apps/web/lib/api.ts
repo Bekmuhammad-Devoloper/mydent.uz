@@ -62,6 +62,7 @@ export const loginDoctor = (phone: string, password: string) =>
 export const createUser = (data: any) => api.post('/users/register', data);
 export const registerUser = (data: any) => api.post('/users/register', data);
 export const getUserByPhone = (phone: string) => api.get(`/users/by-phone/${phone}`);
+export const getUserByTelegramId = (telegramId: string) => api.get(`/users/by-telegram/${telegramId}`);
 export const getUserAppointments = (userId: string) => api.get(`/users/${userId}/appointments`);
 export const getUserDiagnoses = (userId: string) => api.get(`/users/${userId}/diagnoses`);
 export const cancelUserAppointment = (userId: string, appointmentId: string) =>

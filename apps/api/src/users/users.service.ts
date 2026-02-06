@@ -20,6 +20,14 @@ export class UsersService {
     return user;
   }
 
+  async findByTelegramId(telegramId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { telegramId: BigInt(telegramId) },
+    });
+    if (!user) throw new NotFoundException('User not found');
+    return { ...user, telegramId: user.telegramId?.toString() };
+  }
+
   async findById(id: string) {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException('User not found');
