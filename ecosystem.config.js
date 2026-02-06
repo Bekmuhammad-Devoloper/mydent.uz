@@ -1,0 +1,41 @@
+module.exports = {
+  apps: [
+    {
+      name: 'medbook-api',
+      cwd: './apps/api',
+      script: 'dist/main.js',
+      instances: 1,
+      exec_mode: 'fork',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 4000,
+      },
+      env_file: './apps/api/.env',
+      watch: false,
+      max_memory_restart: '500M',
+      error_file: './logs/api-error.log',
+      out_file: './logs/api-out.log',
+      merge_logs: true,
+      time: true,
+    },
+    {
+      name: 'medbook-web',
+      cwd: './apps/web',
+      script: 'node_modules/.bin/next',
+      args: 'start -p 3000',
+      instances: 1,
+      exec_mode: 'fork',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000,
+        API_URL: 'http://localhost:4000',
+      },
+      watch: false,
+      max_memory_restart: '500M',
+      error_file: './logs/web-error.log',
+      out_file: './logs/web-out.log',
+      merge_logs: true,
+      time: true,
+    },
+  ],
+};

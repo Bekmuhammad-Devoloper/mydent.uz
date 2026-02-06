@@ -1,5 +1,5 @@
 #!/bin/bash
-# ─── MedBook VPS Deploy Script ──────────────────────
+# ─── MedBook VPS Deploy Script (PM2) ────────────────
 # Ishlatish: chmod +x deploy.sh && ./deploy.sh
 set -e
 
@@ -9,22 +9,35 @@ echo "🚀 MedBook Deploy boshlandi..."
 echo "📥 Git pull..."
 git pull origin main
 
-# 2. Build & start
-echo "🐳 Docker build & up..."
-docker compose down
-docker compose build --no-cache
-docker compose up -d
+# 2. Install dependencies
+echo "📦 Dependencies..."
+npm install
 
-# 3. Wait for DB
-echo "⏳ DB ready kutilmoqda..."
-sleep 5
+# 3. Prisma generate + migrate
+echo "�️ Prisma migrate..."
+cd apps/api
+npx prisma generate
+npx prisma migrate deploy
+cd ../..
 
-# 4. Migrate
-echo "📦 Prisma migrate..."
-docker compose exec api npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
+# 4. Build API
+echo "🔨 Building API..."
+npm run build:api
+
+# 5. Build Web
+echo "🔨 Building Web..."
+npm run build:web
+
+# 6. Create logs dir
+mkdir -p logs
+
+# 7. PM2 restart
+echo "� PM2 restart..."
+pm2 restart ecosystem.config.js --update-env 2>/dev/null || pm2 start ecosystem.config.js
+pm2 save
 
 echo ""
 echo "✅ Deploy muvaffaqiyatli yakunlandi!"
 echo "🌐 https://mydent.uz"
 echo ""
-docker compose ps
+pm2 list
