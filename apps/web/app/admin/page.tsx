@@ -677,7 +677,22 @@ function OwnerDashboard({ clinicId }: { clinicId: string }) {
       try {
         const { data } = await getClinicStats(clinicId);
         setStats(data);
-      } catch { /* ignore */ }
+      } catch {
+        // If API fails, show empty dashboard with zeros
+        setStats({
+          totalDoctors: 0,
+          totalAppointments: 0,
+          todayAppointments: 0,
+          completedAppointments: 0,
+          pendingAppointments: 0,
+          acceptedAppointments: 0,
+          cancelledAppointments: 0,
+          totalRevenue: 0,
+          todayRevenue: 0,
+          doctors: [],
+          appointments: [],
+        });
+      }
       setLoading(false);
     })();
   }, [clinicId]);
