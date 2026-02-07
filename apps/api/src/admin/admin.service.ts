@@ -350,4 +350,46 @@ export class AdminService {
       appointments,
     };
   }
+
+  // ─── All Users (Founder) ────────────────────────────
+
+  async findAllUsers() {
+    return this.prisma.user.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  // ─── Clinic Patients (Owner) ────────────────────────
+
+  async getClinicPatients(clinicId: string) {
+    const appointments = await this.prisma.appointment.findMany({
+      where: { doctor: { clinicId } },
+      include: {
+        user: true,
+        doctor: { include: { specialty: true } },
+        diagnosis: true,
+      },
+      orderBy: [{ date: 'desc' }, { startTime: 'desc' }],
+    });
+
+    // Group by user
+    const userMap = new Map<string, any>();
+    for (const a of appointments) {
+      if (!a.user) continue;
+      if (!userMap.has(a.userId)) {
+        userMap.set(a.userId, {
+          ...a.user,
+          appointments: [],
+          totalVisits: 0,
+          completedVisits: 0,
+        });
+      }
+      const u = userMap.get(a.userId);
+      u.appointments.push(a);
+      u.totalVisits++;
+      if (a.status === 'COMPLETED') u.completedVisits++;
+    }
+
+    return Array.from(userMap.values());
+  }
 }

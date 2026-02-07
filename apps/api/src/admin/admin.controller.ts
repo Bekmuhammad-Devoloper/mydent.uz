@@ -219,4 +219,20 @@ export class AdminController {
   getClinicStats(@Param('clinicId') clinicId: string) {
     return this.adminService.getClinicStats(clinicId);
   }
+
+  // ─── Users (Founder) ───────────────────────────────
+
+  @Get('users')
+  @ApiOperation({ summary: 'List all users (Founder)' })
+  findAllUsers() {
+    return this.adminService.findAllUsers();
+  }
+
+  // ─── Clinic Patients (Owner) ────────────────────────
+
+  @Get('clinic-patients/:clinicId')
+  @ApiOperation({ summary: 'Get clinic patients with appointments & diagnoses' })
+  getClinicPatients(@Param('clinicId') clinicId: string) {
+    return this.adminService.getClinicPatients(clinicId);
+  }
 }

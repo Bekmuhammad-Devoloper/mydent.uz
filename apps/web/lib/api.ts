@@ -44,6 +44,12 @@ export const deleteDoctor = (id: string) => api.delete(`/admin/doctors/${id}`);
 // ─── Clinic Stats (Owner) ───────────────────────────
 export const getClinicStats = (clinicId: string) => api.get(`/admin/clinic-stats/${clinicId}`);
 
+// ─── Users (Founder) ────────────────────────────────
+export const getUsers = () => api.get('/admin/users');
+
+// ─── Clinic Patients (Owner) ────────────────────────
+export const getClinicPatients = (clinicId: string) => api.get(`/admin/clinic-patients/${clinicId}`);
+
 // ─── Doctors (Public) ───────────────────────────────
 export const getDoctorsByClinicAndSpecialty = (clinicId: string, specialty: string) =>
   api.get(`/doctors/by-clinic/${clinicId}?specialty=${encodeURIComponent(specialty)}`);

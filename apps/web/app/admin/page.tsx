@@ -10,13 +10,14 @@ import {
   getOwners, createOwner, updateOwner, deleteOwner,
   getSpecialties, createSpecialty, updateSpecialty, deleteSpecialty,
   getDoctorsByClinic, createDoctor, updateDoctor, deleteDoctor,
-  getClinicStats,
+  getClinicStats, getUsers, getClinicPatients, getDoctors,
 } from '../../lib/api';
 import {
   Globe, Building2, User, Stethoscope, Phone,
   Award, Banknote, Pencil, Trash2, Plus, LogOut, Eye, EyeOff, MapPin,
   ShieldCheck, Hospital, Tag, LayoutDashboard, CalendarCheck, DoorOpen,
   Clock, Users, TrendingUp, CheckCircle2, XCircle, Timer, Activity,
+  FileText, UserCheck, Smartphone,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -778,6 +779,208 @@ function OwnerDashboard({ clinicId }: { clinicId: string }) {
   );
 }
 
+/* ======================== FOUNDER DOCTORS (all) ======================== */
+function FounderDoctorsSection() {
+  const [list, setList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      try { const { data } = await getDoctors(); setList(data); }
+      catch { /* ignore */ }
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <p className="text-gray-400 text-center py-8">Yuklanmoqda...</p>;
+
+  const filtered = list.filter((d: any) => {
+    const q = search.toLowerCase();
+    return !q || `${d.firstName} ${d.lastName} ${d.phone}`.toLowerCase().includes(q);
+  });
+
+  return (
+    <div>
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Qidirish (ism, telefon)..." className="input flex-1" />
+        <p className="text-sm text-gray-500 self-end pb-2">Jami: <span className="font-bold text-gray-700">{filtered.length}</span></p>
+      </div>
+      <div className="space-y-2">
+        {filtered.map((d: any) => (
+          <div key={d.id} className="p-4 bg-gray-50 rounded-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-bold text-gray-800">{d.firstName} {d.lastName}</span>
+                  <span className="text-xs text-gray-400 flex items-center gap-1"><Phone className="w-3 h-3" /> {d.phone}</span>
+                </div>
+                <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 flex-wrap">
+                  <span className="flex items-center gap-1"><Award className="w-3.5 h-3.5" /> {d.specialty?.nameUz || '—'}</span>
+                  <span className="flex items-center gap-1"><Building2 className="w-3.5 h-3.5" /> {d.clinic?.nameUz || '—'}</span>
+                  <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {d.experienceYears} yil</span>
+                  <span className="flex items-center gap-1"><Banknote className="w-3.5 h-3.5" /> {d.price?.toLocaleString()} so&#39;m</span>
+                  {d.room && <span className="flex items-center gap-1"><DoorOpen className="w-3.5 h-3.5" /> {d.room}-xona</span>}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && <p className="text-gray-400 text-sm text-center py-8">Shifokorlar topilmadi</p>}
+      </div>
+    </div>
+  );
+}
+
+/* ======================== FOUNDER USERS (all) ======================== */
+function FounderUsersSection() {
+  const [list, setList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      try { const { data } = await getUsers(); setList(data); }
+      catch { /* ignore */ }
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <p className="text-gray-400 text-center py-8">Yuklanmoqda...</p>;
+
+  const filtered = list.filter((u: any) => {
+    const q = search.toLowerCase();
+    return !q || `${u.firstName} ${u.lastName} ${u.phone}`.toLowerCase().includes(q);
+  });
+
+  return (
+    <div>
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Qidirish (ism, telefon)..." className="input flex-1" />
+        <p className="text-sm text-gray-500 self-end pb-2">Jami: <span className="font-bold text-gray-700">{filtered.length}</span></p>
+      </div>
+      <div className="space-y-2">
+        {filtered.map((u: any) => (
+          <div key={u.id} className="p-4 bg-gray-50 rounded-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-bold text-gray-800">{u.firstName} {u.lastName}</span>
+                  <span className="text-xs text-gray-400 flex items-center gap-1"><Phone className="w-3 h-3" /> {u.phone}</span>
+                </div>
+                <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 flex-wrap">
+                  <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5" /> {u.language || 'UZ'}</span>
+                  {u.telegramId && <span className="flex items-center gap-1"><Smartphone className="w-3.5 h-3.5" /> Telegram</span>}
+                  <span className="flex items-center gap-1"><CalendarCheck className="w-3.5 h-3.5" /> {new Date(u.createdAt).toLocaleDateString('uz-UZ')}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && <p className="text-gray-400 text-sm text-center py-8">Foydalanuvchilar topilmadi</p>}
+      </div>
+    </div>
+  );
+}
+
+/* ======================== OWNER PATIENTS ======================== */
+function OwnerPatientsSection({ clinicId }: { clinicId: string }) {
+  const [patients, setPatients] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try { const { data } = await getClinicPatients(clinicId); setPatients(data); }
+      catch { /* ignore */ }
+      setLoading(false);
+    })();
+  }, [clinicId]);
+
+  if (loading) return <p className="text-gray-400 text-center py-8">Yuklanmoqda...</p>;
+
+  const filtered = patients.filter((p: any) => {
+    const q = search.toLowerCase();
+    return !q || `${p.firstName} ${p.lastName} ${p.phone}`.toLowerCase().includes(q);
+  });
+
+  const statusLabels: Record<string, { text: string; color: string }> = {
+    PENDING: { text: 'Kutilmoqda', color: 'bg-yellow-100 text-yellow-700' },
+    ACCEPTED: { text: 'Qabul qilindi', color: 'bg-blue-100 text-blue-700' },
+    COMPLETED: { text: 'Bajarildi', color: 'bg-green-100 text-green-700' },
+    CANCELLED: { text: 'Bekor qilindi', color: 'bg-red-100 text-red-700' },
+  };
+
+  return (
+    <div>
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Bemor qidirish (ism, telefon)..." className="input flex-1" />
+        <p className="text-sm text-gray-500 self-end pb-2">Jami: <span className="font-bold text-gray-700">{filtered.length}</span> bemor</p>
+      </div>
+      <div className="space-y-3">
+        {filtered.map((p: any) => (
+          <div key={p.id} className="bg-gray-50 rounded-xl overflow-hidden">
+            <button
+              onClick={() => setExpanded(expanded === p.id ? null : p.id)}
+              className="w-full text-left p-4 hover:bg-gray-100 transition"
+              title={`${p.firstName} ${p.lastName} ma'lumotlari`}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <UserCheck className="w-5 h-5 text-purple-600" />
+                    <span className="font-bold text-gray-800">{p.firstName} {p.lastName}</span>
+                    <span className="text-xs text-gray-400 flex items-center gap-1"><Phone className="w-3 h-3" /> {p.phone}</span>
+                  </div>
+                  <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
+                    <span>Tashriflar: <strong>{p.totalVisits}</strong></span>
+                    <span>Yakunlangan: <strong className="text-green-600">{p.completedVisits}</strong></span>
+                  </div>
+                </div>
+                <div className="text-gray-400 text-sm">{expanded === p.id ? '▲' : '▼'}</div>
+              </div>
+            </button>
+
+            {expanded === p.id && (
+              <div className="px-4 pb-4 space-y-2 border-t border-gray-200 pt-3">
+                {p.appointments?.map((a: any) => {
+                  const st = statusLabels[a.status] || { text: a.status, color: 'bg-gray-100 text-gray-600' };
+                  const dateStr = new Date(a.date).toLocaleDateString('uz-UZ', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                  return (
+                    <div key={a.id} className="bg-white rounded-lg p-3 border">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="text-sm">
+                          <span className="font-medium text-gray-700">{a.doctor?.firstName} {a.doctor?.lastName}</span>
+                          <span className="text-gray-400 mx-1">|</span>
+                          <span className="text-gray-500">{a.doctor?.specialty?.nameUz}</span>
+                          <span className="text-gray-400 mx-1">|</span>
+                          <span className="text-gray-500">{dateStr} {a.startTime}—{a.endTime}</span>
+                        </div>
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap ${st.color}`}>{st.text}</span>
+                      </div>
+                      {a.diagnosis && (
+                        <div className="mt-2 bg-green-50 rounded-lg p-2.5 border border-green-200 text-sm space-y-1">
+                          <p className="text-green-800"><strong><FileText className="w-3.5 h-3.5 inline" /> Tashxis:</strong> {a.diagnosis.description}</p>
+                          {a.diagnosis.prescription && <p className="text-green-700"><strong>Dorilar:</strong> {a.diagnosis.prescription}</p>}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+                {(!p.appointments || p.appointments.length === 0) && (
+                  <p className="text-gray-400 text-sm text-center py-2">Qabullar topilmadi</p>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+        {filtered.length === 0 && <p className="text-gray-400 text-sm text-center py-8">Bemorlar topilmadi</p>}
+      </div>
+    </div>
+  );
+}
+
 /* ======================== OWNER APPOINTMENTS ======================== */
 function OwnerAppointments({ clinicId }: { clinicId: string }) {
   const [stats, setStats] = useState<any>(null);
@@ -904,8 +1107,8 @@ function OwnerAppointments({ clinicId }: { clinicId: string }) {
 }
 
 /* ======================== MAIN PAGE ======================== */
-type FounderTab = 'regions' | 'clinics' | 'owners' | 'specialties';
-type OwnerTab = 'dashboard' | 'doctors' | 'appointments';
+type FounderTab = 'regions' | 'clinics' | 'owners' | 'specialties' | 'doctors' | 'users';
+type OwnerTab = 'dashboard' | 'doctors' | 'appointments' | 'patients';
 type Tab = FounderTab | OwnerTab;
 
 export default function AdminPage() {
@@ -932,6 +1135,8 @@ export default function AdminPage() {
     { key: 'clinics', label: 'Klinikalar', icon: <Building2 className="w-5 h-5" /> },
     { key: 'owners', label: 'Egalar', icon: <User className="w-5 h-5" /> },
     { key: 'specialties', label: 'Mutaxassisliklar', icon: <Tag className="w-5 h-5" /> },
+    { key: 'doctors', label: 'Shifokorlar', icon: <Stethoscope className="w-5 h-5" /> },
+    { key: 'users', label: 'Foydalanuvchilar', icon: <Users className="w-5 h-5" /> },
   ];
 
   // Clinic Owner tabs
@@ -939,6 +1144,7 @@ export default function AdminPage() {
     { key: 'dashboard', label: 'Statistika', icon: <LayoutDashboard className="w-5 h-5" /> },
     { key: 'doctors', label: 'Shifokorlar', icon: <Stethoscope className="w-5 h-5" /> },
     { key: 'appointments', label: 'Qabullar', icon: <CalendarCheck className="w-5 h-5" /> },
+    { key: 'patients', label: 'Bemorlar', icon: <UserCheck className="w-5 h-5" /> },
   ];
 
   const isFounder = adminRole === 'FOUNDER';
@@ -952,9 +1158,11 @@ export default function AdminPage() {
     clinics: "Klinikalarni boshqarish — yaratish, tahrirlash, o'chirish",
     owners: 'Klinika egalarini boshqarish',
     specialties: "Mutaxassisliklarni boshqarish — Stomatolog, Pediatr va h.k.",
+    doctors: isFounder ? "Barcha shifokorlar ro'yxati" : "Shifokorlarni boshqarish — yaratish, tahrirlash, o'chirish",
+    users: "Barcha foydalanuvchilar (bemorlar) ro'yxati",
     dashboard: "Klinikangiz statistikasi — daromad, shifokorlar, qabullar",
-    doctors: "Shifokorlarni boshqarish — yaratish, tahrirlash, o'chirish",
     appointments: "Barcha shifokorlar bo'yicha qabullar ro'yxati",
+    patients: "Klinika bemorlari — tashxislar va shifokor xulosalari",
   };
 
   return (
@@ -1078,6 +1286,8 @@ export default function AdminPage() {
             {isFounder && activeTab === 'clinics' && <ClinicsSection />}
             {isFounder && activeTab === 'owners' && <OwnersSection />}
             {isFounder && activeTab === 'specialties' && <SpecialtiesSection />}
+            {isFounder && activeTab === 'doctors' && <FounderDoctorsSection />}
+            {isFounder && activeTab === 'users' && <FounderUsersSection />}
             {/* Clinic Owner sections */}
             {!isFounder && activeTab === 'dashboard' && adminUser?.clinicId && (
               <OwnerDashboard clinicId={adminUser.clinicId} />
@@ -1087,6 +1297,9 @@ export default function AdminPage() {
             )}
             {!isFounder && activeTab === 'appointments' && adminUser?.clinicId && (
               <OwnerAppointments clinicId={adminUser.clinicId} />
+            )}
+            {!isFounder && activeTab === 'patients' && adminUser?.clinicId && (
+              <OwnerPatientsSection clinicId={adminUser.clinicId} />
             )}
           </div>
         </div>
