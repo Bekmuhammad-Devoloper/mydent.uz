@@ -671,34 +671,31 @@ function OwnerDoctorsSection({ clinicId }: { clinicId: string }) {
 function OwnerDashboard({ clinicId }: { clinicId: string }) {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getClinicStats(clinicId);
-        setStats(data);
-      } catch {
-        // If API fails, show empty dashboard with zeros
-        setStats({
-          totalDoctors: 0,
-          totalAppointments: 0,
-          todayAppointments: 0,
-          completedAppointments: 0,
-          pendingAppointments: 0,
-          acceptedAppointments: 0,
-          cancelledAppointments: 0,
-          totalRevenue: 0,
-          todayRevenue: 0,
-          doctors: [],
-          appointments: [],
-        });
-      }
-      setLoading(false);
-    })();
-  }, [clinicId]);
+  const loadStats = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await getClinicStats(clinicId);
+      setStats(res.data);
+    } catch (err: any) {
+      const msg = getErrorMsg(err, 'Server xatosi');
+      console.error('Dashboard stats error:', err?.response?.data || err?.message || err);
+      setError(msg);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { loadStats(); }, [clinicId]);
 
   if (loading) return <p className="text-gray-400 text-center py-8">Yuklanmoqda...</p>;
-  if (!stats) return <p className="text-red-400 text-center py-8">Ma&#39;lumot topilmadi</p>;
+  if (error || !stats) return (
+    <div className="text-center py-8">
+      <p className="text-red-400 mb-3">{error || "Ma'lumot topilmadi"}</p>
+      <button onClick={loadStats} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">Qayta yuklash</button>
+    </div>
+  );
 
   const statCards = [
     { label: 'Shifokorlar', value: stats.totalDoctors, icon: <Stethoscope className="w-6 h-6" />, color: 'bg-blue-50 text-blue-600' },
