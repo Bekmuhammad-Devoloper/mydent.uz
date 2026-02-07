@@ -375,16 +375,17 @@ export class AdminService {
     // Group by user
     const userMap = new Map<string, any>();
     for (const a of appointments) {
-      if (!a.user) continue;
-      if (!userMap.has(a.userId)) {
-        userMap.set(a.userId, {
+      if (!a.user || !a.userId) continue;
+      const uid = a.userId as string;
+      if (!userMap.has(uid)) {
+        userMap.set(uid, {
           ...a.user,
           appointments: [],
           totalVisits: 0,
           completedVisits: 0,
         });
       }
-      const u = userMap.get(a.userId);
+      const u = userMap.get(uid);
       u.appointments.push(a);
       u.totalVisits++;
       if (a.status === 'COMPLETED') u.completedVisits++;
