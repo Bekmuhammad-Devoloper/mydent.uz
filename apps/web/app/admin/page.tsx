@@ -160,7 +160,7 @@ function RegionsSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
         <input value={nameUz} onChange={(e) => setNameUz(e.target.value)} placeholder="Nom (UZ)" className="input" />
-        <input value={nameRu} onChange={(e) => setNameRu(e.target.value)} placeholder="�������� (RU)" className="input" />
+        <input value={nameRu} onChange={(e) => setNameRu(e.target.value)} placeholder="Название (RU)" className="input" />
         <button onClick={save} className="btn-primary flex items-center justify-center gap-2">
           {editId ? <><Pencil className="w-4 h-4" /> Yangilash</> : <><Plus className="w-4 h-4" /> Qo&#39;shish</>}
         </button>
@@ -248,7 +248,7 @@ function ClinicsSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
         <input value={form.nameUz} onChange={(e) => upd('nameUz', e.target.value)} placeholder="Nom (UZ)" className="input" />
-        <input value={form.nameRu} onChange={(e) => upd('nameRu', e.target.value)} placeholder="�������� (RU)" className="input" />
+        <input value={form.nameRu} onChange={(e) => upd('nameRu', e.target.value)} placeholder="Название (RU)" className="input" />
         <input value={form.address} onChange={(e) => upd('address', e.target.value)} placeholder="Manzil" className="input" />
         <input value={form.phone} onChange={(e) => upd('phone', e.target.value)} placeholder="Telefon" className="input" />
         <select value={form.regionId} onChange={(e) => upd('regionId', e.target.value)} className="input">
@@ -386,7 +386,7 @@ function OwnersSection() {
             <div>
               <Phone className="w-3 h-3 inline text-gray-400" />
               <span className="font-medium ml-1">{o.phone}</span>
-              <span className="text-gray-400 text-sm ml-2">{o.clinic?.nameUz || '�'}</span>
+              <span className="text-gray-400 text-sm ml-2">{o.clinic?.nameUz || '—'}</span>
             </div>
             <div className="flex gap-2">
               <button
@@ -447,8 +447,8 @@ function SpecialtiesSection() {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-        <input value={nameUz} onChange={(e) => setNameUz(e.target.value)} placeholder="Nom (UZ) � Stomatolog" className="input" />
-        <input value={nameRu} onChange={(e) => setNameRu(e.target.value)} placeholder="�������� (RU) � ����������" className="input" />
+        <input value={nameUz} onChange={(e) => setNameUz(e.target.value)} placeholder="Nom (UZ) — Stomatolog" className="input" />
+        <input value={nameRu} onChange={(e) => setNameRu(e.target.value)} placeholder="Название (RU) — Стоматолог" className="input" />
         <button onClick={save} className="btn-primary flex items-center justify-center gap-2">
           {editId ? <><Pencil className="w-4 h-4" /> Yangilash</> : <><Plus className="w-4 h-4" /> Qo&#39;shish</>}
         </button>
@@ -566,7 +566,7 @@ function OwnerDoctorsSection({ clinicId }: { clinicId: string }) {
             type="password"
             value={form.password}
             onChange={(e) => upd('password', e.target.value)}
-            placeholder="��������"
+            placeholder="Пароль"
             className="input"
           />
         </div>
@@ -633,7 +633,7 @@ function OwnerDoctorsSection({ clinicId }: { clinicId: string }) {
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
               <span className="font-medium">{d.firstName} {d.lastName}</span>
               <span className="text-gray-500 text-sm flex items-center gap-1">
-                <Award className="w-3 h-3" /> {d.specialty?.nameUz || '�'}
+                <Award className="w-3 h-3" /> {d.specialty?.nameUz || '—'}
               </span>
               <span className="text-gray-500 text-sm flex items-center gap-1">
                 <Clock className="w-3 h-3" /> {d.experienceYears} yil
@@ -828,7 +828,7 @@ function OwnerAppointments({ clinicId }: { clinicId: string }) {
           <select value={doctorFilter} onChange={(e) => setDoctorFilter(e.target.value)} className="input" title="Doctor filter">
             <option value="all">Barcha shifokorlar</option>
             {stats.doctors?.map((d: any) => (
-              <option key={d.id} value={d.id}>{d.firstName} {d.lastName} � {d.specialty?.nameUz || ''}</option>
+              <option key={d.id} value={d.id}>{d.firstName} {d.lastName} — {d.specialty?.nameUz || ''}</option>
             ))}
           </select>
         </div>
@@ -870,7 +870,7 @@ function OwnerAppointments({ clinicId }: { clinicId: string }) {
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" />
-                      {a.startTime} � {a.endTime}
+                      {a.startTime} — {a.endTime}
                     </span>
                   </div>
                 </div>
@@ -948,12 +948,12 @@ export default function AdminPage() {
   const activeTab = tabs.find(t => t.key === tab) ? tab : tabs[0].key;
 
   const tabDescriptions: Record<string, string> = {
-    regions: "Hududlarni boshqarish � yaratish, tahrirlash, o'chirish",
-    clinics: "Klinikalarni boshqarish � yaratish, tahrirlash, o'chirish",
+    regions: "Hududlarni boshqarish — yaratish, tahrirlash, o'chirish",
+    clinics: "Klinikalarni boshqarish — yaratish, tahrirlash, o'chirish",
     owners: 'Klinika egalarini boshqarish',
-    specialties: "Mutaxassisliklarni boshqarish � Stomatolog, Pediatr va h.k.",
-    dashboard: "Klinikangiz statistikasi � daromad, shifokorlar, qabullar",
-    doctors: "Shifokorlarni boshqarish � yaratish, tahrirlash, o'chirish",
+    specialties: "Mutaxassisliklarni boshqarish — Stomatolog, Pediatr va h.k.",
+    dashboard: "Klinikangiz statistikasi — daromad, shifokorlar, qabullar",
+    doctors: "Shifokorlarni boshqarish — yaratish, tahrirlash, o'chirish",
     appointments: "Barcha shifokorlar bo'yicha qabullar ro'yxati",
   };
 

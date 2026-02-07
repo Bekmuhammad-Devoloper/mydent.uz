@@ -13,6 +13,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="uz">
+      <head>
+        <meta charSet="utf-8" />
+      </head>
       <body>
         <Toaster position="top-right" />
         {children}
