@@ -417,12 +417,20 @@ export default function UserPage() {
       setTgUser(u);
       tg.expand();
       tg.ready();
-      if (!lang) setLang(u.language_code === 'ru' ? 'RU' : 'UZ');
       if (!currentUser) {
         getUserByTelegramId(String(u.id))
-          .then(({ data }: { data: any }) => { setCurrentUser(data); setReady(true); })
-          .catch(() => setReady(true));
+          .then(({ data }: { data: any }) => {
+            setCurrentUser(data);
+            setLang(data.language === 'RU' ? 'RU' : 'UZ');
+            setReady(true);
+          })
+          .catch(() => {
+            if (!lang) setLang(u.language_code === 'ru' ? 'RU' : 'UZ');
+            setReady(true);
+          });
         return;
+      } else {
+        setLang(currentUser.language === 'RU' ? 'RU' : 'UZ');
       }
     }
     setReady(true);
