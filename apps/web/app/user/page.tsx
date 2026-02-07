@@ -183,7 +183,7 @@ function BookingFlow({ user, lang, onBack }: { user: any; lang: 'UZ' | 'RU'; onB
         <div className="flex gap-1">{allSteps.map((_, i) => (<div key={i} className={`h-1.5 flex-1 rounded-full ${i <= idx ? 'bg-blue-500' : 'bg-gray-200'}`} />))}</div>
         <p className="text-xs text-gray-400 text-center mt-1">{idx + 1}/{allSteps.length}</p>
       </div>
-      {!isTg() && (<button onClick={goBack} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'Назад'}</button>)}
+      <button onClick={goBack} className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'Назад'}</button>
 
       {step === 'region' && (
         <div>
@@ -365,13 +365,13 @@ function UserMenu({ user, lang, onLogout }: { user: any; lang: 'UZ' | 'RU'; onLo
   if (view === 'booking') return <div className="min-h-screen bg-gray-50 p-4"><BookingFlow user={user} lang={lang} onBack={() => setView('menu')} /></div>;
   if (view === 'appointments') return (
     <div className="min-h-screen bg-gray-50 p-4"><div className="max-w-2xl mx-auto">
-      {!isTg() && <button onClick={() => setView('menu')} className="flex items-center gap-2 text-blue-600 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'Назад'}</button>}
+      <button onClick={() => setView('menu')} className="flex items-center gap-2 text-blue-600 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'Назад'}</button>
       <AppointmentsList user={user} lang={lang} />
     </div></div>
   );
   if (view === 'diagnoses') return (
     <div className="min-h-screen bg-gray-50 p-4"><div className="max-w-2xl mx-auto">
-      {!isTg() && <button onClick={() => setView('menu')} className="flex items-center gap-2 text-blue-600 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'Назад'}</button>}
+      <button onClick={() => setView('menu')} className="flex items-center gap-2 text-blue-600 mb-4"><ArrowLeft className="w-4 h-4" /> {lang === 'UZ' ? 'Orqaga' : 'Назад'}</button>
       <DiagnosesList user={user} lang={lang} />
     </div></div>
   );
